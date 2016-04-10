@@ -1,0 +1,16 @@
+Cards Against Huge Manatees
+Project Synergy
+Python 3.5.1
+Requires python-telegram-bot library and pydblite
+Python-Telegram-Bot library: https://github.com/python-telegram-bot/python-telegram-bot
+
+Installation instructions:
+From the command line run:
+pip install python-telegram-bot
+pip install pydblite
+
+Download the source code and extract to a directory
+
+From the command line run:
+cd 'yourExtractedDirectory'
+python ./cahm.py
