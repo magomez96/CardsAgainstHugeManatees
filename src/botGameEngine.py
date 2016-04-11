@@ -140,6 +140,19 @@ def winner(bot, currentMessage, chat_id): # Decide who wins here. Only the judge
     else:
         botSendFunctions.sendText(bot, chat_id, "You are not the judge")
 
+def passPlayer(bot, currentMessage, chat_id):
+    gameRecords = Base("chatStorage/records.pdl")
+    gameRecords.open()
+    rec = gameRecords._groupChatID[str(chat_id)] # select all the records with chat_id (only 1)
+    if not rec:
+        botSendFunctions.sendText(bot, chat_id, "Invalid command format")
+        return
+    rec = rec[-1] # Strip the last record from the list
+    if str(currentMessage.from_user.id) == str(rec['creator']):
+        judge(bot, rec['gameID'], chat_id)
+    else:
+        botSendFunctions.sendText(bot, chat_id, "Sorry. Only the judge can pass.")
+
 def endGame(bot, currentMessage, chat_id): # /quit behavior ends the game for everyone
     gameRecords = Base("chatStorage/records.pdl")
     gameRecords.open()

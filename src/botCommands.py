@@ -96,6 +96,8 @@ def process(bot, chat_id, parsedCommand, messageText, currentMessage, update, in
             admin.customBlackCard(bot, currentMessage, chat_id)
         elif parsedCommand == "/addwhitecard":
             admin.customWhiteCard(bot, currentMessage, chat_id)
+        elif parsedCommand == "/pass":
+            game.passPlayer(bot, currentMessage, chat_id)
         elif parsedCommand[0] == "/": # Error handling
             sendText("Not a valid command")
 
