@@ -149,9 +149,9 @@ def passPlayer(bot, currentMessage, chat_id):
         botSendFunctions.sendText(bot, chat_id, "Invalid command format")
         return
     rec = rec[-1] # Strip the last record from the list
-    if str(currentMessage.from_user.id) == str(rec['creator']) and len(globalVars.resp) > 0:
+    if str(currentMessage.from_user.id) == str(rec['creator']) and len(globalVars.resp[rec['gameID']]) > 0:
         judge(bot, rec['gameID'], chat_id)
-    elif len(globalVars.resp) == 0:
+    elif len(globalVars.resp[rec['gameID']]) == 0:
         try:
             globalVars.currBlackCard[currentMessage.text[5:10]] = str(globalVars.blackCards[rec['gameID']].pop()['Value']) # Get the next black card
         except IndexError: # If there are no more cards end the game
