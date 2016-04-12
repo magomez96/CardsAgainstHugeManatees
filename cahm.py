@@ -21,7 +21,7 @@ currMess = list() # A list to hold the current message we're looking at
 
 globalVars.init() # Bring in the global variables
 
-print("Cards Against Huge Manatees Bot 1.0")
+print("Cards Against Huge Manatees Bot 2.0")
 print("Team Synergy")
 
 newestOffset = 0
