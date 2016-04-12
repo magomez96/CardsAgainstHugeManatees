@@ -12,7 +12,7 @@ def customBlackCard(bot, currentMessage, chat_id):
             print("Couldn't open black card CSV files.")
             return
     else:
-        botSendFunctions.sendText(bot, chat_id, "Please use the format, to insert a black use 5 underscores: /addblackcard card text here")
+        botSendFunctions.sendText(bot, chat_id, "Please use the format: /addblackcard card text here. To insert a blank use 5 underscores")
 
 
 def customWhiteCard(bot, currentMessage, chat_id):

@@ -148,7 +148,7 @@ def passPlayer(bot, currentMessage, chat_id):
         botSendFunctions.sendText(bot, chat_id, "Invalid command format")
         return
     rec = rec[-1] # Strip the last record from the list
-    if str(currentMessage.from_user.id) == str(rec['creator']):
+    if str(currentMessage.from_user.id) == rec['creator']:
         judge(bot, rec['gameID'], chat_id)
     else:
         botSendFunctions.sendText(bot, chat_id, "Sorry. Only the judge can pass.")
