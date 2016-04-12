@@ -133,8 +133,9 @@ def winner(bot, currentMessage, chat_id): # Decide who wins here. Only the judge
                 return
             botSendFunctions.sendText(bot, rec['groupChatID'], globalVars.currBlackCard[currentMessage.text[5:10]]) # Send the next black card
             for player in rec['memberChatIDs'].split(): # Send all the players a new card to replace the one they used
-                del globalVars.resp[rec['gameID']][player]
-                botSendFunctions.sendText(bot, player, "Here are your new cards", 0, globalVars.playerCards[player])
+                if player in globalVars.resp[rec['gameID']]:
+                    del globalVars.resp[rec['gameID']][player]
+                    botSendFunctions.sendText(bot, player, "Here are your new cards", 0, globalVars.playerCards[player])
         else:
             botSendFunctions.sendText(bot, chat_id, "Invalid answer")
     else:
@@ -148,8 +149,14 @@ def passPlayer(bot, currentMessage, chat_id):
         botSendFunctions.sendText(bot, chat_id, "Invalid command format")
         return
     rec = rec[-1] # Strip the last record from the list
-    if str(currentMessage.from_user.id) == str(rec['creator']):
+    if str(currentMessage.from_user.id) == str(rec['creator']) and len(globalVars.resp[rec['gameID']]) > 0:
         judge(bot, rec['gameID'], chat_id)
+    elif len(globalVars.resp[rec['gameID']]) == 0:
+        botSendFunctions.sendText(bot, rec['groupChatID'], globalVars.currBlackCard[currentMessage.text[5:10]]) # Send the next black card
+        for player in rec['memberChatIDs'].split(): # Send all the players a new card to replace the one they used
+            if player in globalVars.resp[rec['gameID']]:
+                del globalVars.resp[rec['gameID']][player]
+                botSendFunctions.sendText(bot, player, "Here are your new cards", 0, globalVars.playerCards[player])
     else:
         botSendFunctions.sendText(bot, chat_id, "Sorry. Only the judge can pass.")
 
