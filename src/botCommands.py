@@ -38,13 +38,13 @@ def process(bot, chat_id, parsedCommand, messageText, currentMessage, update, in
             sendText(s)
         elif parsedCommand == "/newgame":
             ident = game.generate() # Generate a game ID
-            if not len(currentMessage) > 9:
-                gameRecords.insert(ident, str(chat_id), "", "", "", "", currentMessage.from_user.id, "", 0) # Make a new database record skeleton
+            if not len(currentMessage.text) > 9:
+                gameRecords.insert(ident, str(chat_id), "", "", "", "", currentMessage.from_user.id, "", -1, 0) # Make a new database record skeleton
             else:
                 try:
                     gameRecords.insert(ident, str(chat_id), "", "", "", "", currentMessage.from_user.id, "", abs(int(currentMessage.text.split()[1])), 0) # Make a new database record skeleton
                 except Exception:
-                    gameRecords.insert(ident, str(chat_id), "", "", "", "", currentMessage.from_user.id, "", 0) # Make a new database record skeleton
+                    gameRecords.insert(ident, str(chat_id), "", "", "", "", currentMessage.from_user.id, "", -1, 0) # Make a new database record skeleton
             gameRecords.commit()
             sendText("The game ID is " + ident + " Please type /join " + ident + " in a private chat with the bot.") # Send the ID to the group chat
 
@@ -54,7 +54,7 @@ def process(bot, chat_id, parsedCommand, messageText, currentMessage, update, in
                 sendText("Game ID not found.")
                 return
             rec = rec[-1]
-            if(len(rec['memberUserIDs']) >= int(rec['playerLimit'])):
+            if not int(rec['playerLimit']) == -1 and len(rec['memberUserIDs']) >= int(rec['playerLimit']):
                 sendText("Sorry. The game is full.")
                 return
             if rec['started']: # If the game has already started they can't join.
