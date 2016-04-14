@@ -12,7 +12,7 @@ def generate(): # Return a random 5 char string to act as the game ID
 def initGameEnv(gameID): # Initialize some globals and read in the cards from CSV
     try: # Try to read in the white cards
         globalVars.whiteCards = dict()
-        with open("chatStorage/whiteCards.csv", "r+") as csvfile:
+        with open("chatStorage/whiteCards.csv", "r") as csvfile:
             csvRead = csv.DictReader(csvfile)
             globalVars.whiteCards[gameID] = list(csvRead)
             shuffle(globalVars.whiteCards[gameID])
@@ -21,7 +21,7 @@ def initGameEnv(gameID): # Initialize some globals and read in the cards from CS
         return
     try: # Try to read in the black cards
         globalVars.blackCards = dict()
-        with open("chatStorage/blackCards.csv", "r+") as csvfile:
+        with open("chatStorage/blackCards.csv", "r") as csvfile:
             csvRead = csv.DictReader(csvfile)
             globalVars.blackCards[gameID] = list(csvRead)
             shuffle(globalVars.blackCards[gameID])
