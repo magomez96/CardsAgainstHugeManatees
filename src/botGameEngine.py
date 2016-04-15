@@ -162,6 +162,31 @@ def passPlayer(bot, currentMessage, chat_id):
     else:
         botSendFunctions.sendText(bot, chat_id, "Sorry. Only the judge can pass.")
 
+def leaveGame(bot, currentMessage, chat_id):
+    gameRecords = Base("chatStorage/records.pdl")
+    gameRecords.open()
+    rec = gameRecords._groupChatID[str(chat_id)] # select all the records with chat_id (only 1)
+    if not rec:
+        botSendFunctions.sendText(bot, chat_id, "Invalid command format")
+        return
+    rec = rec[-1] # Strip the last record from the list
+    memberChats = rec['memberChatIDs'].split()
+    memberIDs = rec['memberUserIDs'].split()
+    memberNames = rec['memberUsernames'].split()
+    points = rec['memberPoints'].split()
+    playerIndex = memberIDs.index(str(currentMessage.from_user.id))
+    memberIDs.pop(playerIndex)
+    try:
+        playerChat = str(memberChats.pop(playerIndex))
+        del globalVars.playerCards[playerChat]
+        del globalVars.resp[rec['gameID']][playerChat]
+    except Exception:
+        pass
+    memberNames.pop(playerIndex)
+    points.pop(playerIndex)
+    gameRecords.update(rec, memberUsernames=str(memberNames), memberUserIDs=str(memberIDs), memberChatIDs=str(memberChats), memberPoints=str(points))
+    gameRecords.commit()
+
 def endGame(bot, currentMessage, chat_id): # /quit behavior ends the game for everyone
     gameRecords = Base("chatStorage/records.pdl")
     gameRecords.open()
@@ -189,4 +214,3 @@ def endGame(bot, currentMessage, chat_id): # /quit behavior ends the game for ev
         pass
     gameRecords.delete(rec) # Remove the database record
     gameRecords.commit() # Save the changes
-    botSendFunctions.sendText(bot, chat_id, "Goodbye!")
