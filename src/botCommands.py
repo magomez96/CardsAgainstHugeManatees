@@ -49,39 +49,7 @@ def process(bot, chat_id, parsedCommand, messageText, currentMessage, update, in
             sendText("The game ID is " + ident + " Please type /join " + ident + " in a private chat with the bot.") # Send the ID to the group chat
 
         elif parsedCommand == "/join":
-            rec = gameRecords._gameID[currentMessage.text.upper().split()[1]] # Get the DB record by GameID
-            if not rec:
-                sendText("Game ID not found.")
-                return
-            rec = rec[-1]
-            if not int(rec['playerLimit']) == -1 and len(rec['memberUserIDs']) >= int(rec['playerLimit']):
-                sendText("Sorry. The game is full.")
-                return
-            if rec['started']: # If the game has already started they can't join.
-                sendText("The game has already started. Sorry.")
-                return
-            if rec['groupChatID'] != str(chat_id):
-                memberChats = rec['memberChatIDs']
-                memberIDs = rec['memberUserIDs']
-                memberNames = rec['memberUsernames']
-                points = rec['memberPoints']
-                if str(chat_id) not in memberChats:
-                    if str(currentMessage.from_user.id) == str(rec['creator']):
-                        gameRecords.update(rec, creatorChatID=chat_id)
-                        gameRecords.commit()
-                        sendText("You are the judge of game " + str(rec['gameID']))
-                        return
-                    memberChats += str(chat_id) + " " # String to list and back for the database.
-                    memberIDs += str(currentMessage.from_user.id) + " "
-                    memberNames += str(currentMessage.from_user.first_name) + " "
-                    points += "0 "
-                    gameRecords.update(rec, memberUsernames=memberNames, memberUserIDs=memberIDs, memberChatIDs=memberChats, memberPoints=points) # On every join update the database record
-                    gameRecords.commit()
-                    sendText("You have successfully joined the game " + str(rec['gameID']))
-                else:
-                    sendText("You have already joined the game.")
-            else:
-                sendText("Please type this command in a private chat with the bot.")
+            game.joinGame(bot, currentMessage, chat_id)
         elif parsedCommand == "/startgame":
             try:
                 rec = gameRecords._groupChatID[str(chat_id)]
