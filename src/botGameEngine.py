@@ -58,7 +58,14 @@ def initGameEnv(gameID): # Initialize some globals and read in the cards from CS
                 gameRecords.update(rec, memberUsernames=memberNames, memberUserIDs=memberIDs, memberChatIDs=memberChats, memberPoints=points) # On every join update the database record
                 gameRecords.commit()
                 botSendFunctions.sendText(bot, chat_id, "You have successfully joined the game " + str(rec['gameID']))
-                if rec['started']: # If the game has already started they can't join.
+                if rec['started']: # If the game has already started deal them cards and start a new round
+                    l = [[] for _ in range(5)]
+                    globalVars.playerCards[chat_id] = list()
+                    for i in range(5):
+                        card = globalVars.whiteCards[rec['gameID']].pop()['Value']
+                        l[i].append(str("/ans " + rec['gameID'] + " " + card))
+                    globalVars.playerCards[chat_id] = l
+                    botSendFunctions.sendText(bot, chat_id, "Here are your cards", 0, l)
                     botSendFunctions.sendText(bot, str(rec['groupChatID']), "A new person has joined the game. Starting a new round.")
                     if len(globalVars.resp[rec['gameID']]) > 0:
                         judge(bot, rec['gameID'], rec['groupChatID'])
