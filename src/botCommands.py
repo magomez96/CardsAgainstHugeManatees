@@ -39,12 +39,12 @@ def process(bot, chat_id, parsedCommand, messageText, currentMessage, update, in
         elif parsedCommand == "/newgame":
             ident = game.generate() # Generate a game ID
             if not len(currentMessage.text) > 9:
-                gameRecords.insert(ident, str(chat_id), "", "", "", "", currentMessage.from_user.id, "", -1, 0) # Make a new database record skeleton
+                gameRecords.insert(ident, str(chat_id), "", "", "", "", str(currentMessage.from_user.id), "", -1, 0) # Make a new database record skeleton
             else:
                 try:
-                    gameRecords.insert(ident, str(chat_id), "", "", "", "", currentMessage.from_user.id, "", abs(int(currentMessage.text.split()[1])), 0) # Make a new database record skeleton
+                    gameRecords.insert(ident, str(chat_id), "", "", "", "", str(currentMessage.from_user.id), "", abs(int(currentMessage.text.split()[1])), 0) # Make a new database record skeleton
                 except Exception:
-                    gameRecords.insert(ident, str(chat_id), "", "", "", "", currentMessage.from_user.id, "", -1, 0) # Make a new database record skeleton
+                    gameRecords.insert(ident, str(chat_id), "", "", "", "", str(currentMessage.from_user.id), "", -1, 0) # Make a new database record skeleton
             gameRecords.commit()
             sendText("The game ID is " + ident + " Please type /join " + ident + " in a private chat with the bot.") # Send the ID to the group chat
 
@@ -76,8 +76,8 @@ def process(bot, chat_id, parsedCommand, messageText, currentMessage, update, in
             admin.customWhiteCard(bot, currentMessage, chat_id)
         elif parsedCommand == "/pass":
             game.passPlayer(bot, currentMessage, chat_id)
-        elif parsedCommand == "/leave":
-            game.leaveGame(bot, currentMessage, chat_id)
+        # elif parsedCommand == "/leave":
+        #     game.leaveGame(bot, currentMessage, chat_id)
         elif parsedCommand[0] == "/": # Error handling
             sendText("Not a valid command")
 
