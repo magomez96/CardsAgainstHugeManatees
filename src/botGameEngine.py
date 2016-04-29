@@ -58,6 +58,7 @@ def joinGame(bot, currentMessage, chat_id):
             gameRecords.update(rec, memberUsernames=memberNames, memberUserIDs=memberIDs, memberChatIDs=memberChats, memberPoints=points) # On every join update the database record
             gameRecords.commit()
             botSendFunctions.sendText(bot, chat_id, "You have successfully joined the game " + str(rec['gameID']))
+            botSendFunctions.sendText(bot, rec['groupChatID'], currentMessage.from_user.first_name + " has joined the game.") # Send the player name to the group chat
             if rec['started']: # If the game has already started deal them cards and start a new round
                 l = [[] for _ in range(5)]
                 globalVars.playerCards[str(chat_id)] = list()

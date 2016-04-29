@@ -10,7 +10,7 @@ import src.botCommands as Commands
 from src import globalVars
 
 APIKEY = ""
-with open('apikey.csv', 'r+') as csvfile: # Read in the API key from the .csv file
+with open('apikey.csv', 'r') as csvfile: # Read in the API key from the .csv file
     reader = csv.DictReader(csvfile)
     APIKEY = list(reader)[0]['key']
 
@@ -67,9 +67,8 @@ while running: # Continue to get updates from the different chat groups forever
             if chat_id not in blacklist:
                 parsedCommand = re.split(r'[@\s:,\'*]', currentMessage.text.lower())[0]
                 Commands.process(cahm, chat_id, parsedCommand, currentMessage.text, currentMessage, update, datetime.datetime.now() - startTime) # Handoff to the game logic if the message begins with /
-                time.sleep(1) # Keep the bot from flooding the Telegram API with requests, limit is 20 messages to the same group per minute
-
+                time.sleep(1) # Keep the bot from flooding the network interface with requests
         except Exception: # If anything goes wrong print to the console but keep going
             print(traceback.format_exc())
-    time.sleep(2) # Keep the bot from flooding the Telegram API with requests, limit is 20 messages to the same group per minute
+    time.sleep(2) # Keep the bot from flooding the network interface with requests
     instanceAge += 1

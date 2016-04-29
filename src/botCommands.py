@@ -33,7 +33,8 @@ def process(bot, chat_id, parsedCommand, messageText, currentMessage, update, in
             s += "in your private chat. The judge will choose the winner of each round.\n"
             s += "To end the game type /quit in the group chat\n"
             s += "To add a custom black card type /addblackcard the card text here To insert a blank use 5 underscores\n"
-            s += "To add a custom white card type /addwhitecard the card text here"
+            s += "To add a custom white card type /addwhitecard the card text here\n"
+            s += "The judge can pass a player by typing /pass in the group chat."
 
             sendText(s)
         elif parsedCommand == "/newgame":

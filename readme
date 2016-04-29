@@ -14,3 +14,8 @@ Download the source code and extract to a directory
 From the command line run:
 cd 'yourExtractedDirectory'
 python ./cahm.py
+
+IMPORTANT!!!
+Please note that the sleep threshold in cahm.py may have to be adjusted to avoid
+going over the Telegram API message limit. The limit is about one message per
+second and not more than 20 messages per minute to the same group.
